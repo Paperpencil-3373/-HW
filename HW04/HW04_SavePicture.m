@@ -7,6 +7,35 @@ savefile_fpath = strcat( ...
 
 mkdir(savefile_fpath)
 
+%% Demo: Control 
+
+run("HW04_Demo_org.slx")
+
+% y1
+figure()
+hold on
+fig_01_01 = plot(out.simout_OrgControl_h.Time, out.simout_OrgControl_h.Data)
+
+title_name = "OrgControl_ y1"
+title(title_name)
+
+saveas(fig_01_01, strcat( ...
+    savefile_fpath, "\", title_name, ".png"))
+
+% y2
+figure()
+hold on
+fig_02_01 = plot(out.simout_OrgControl_T_out.Time, out.simout_OrgControl_T_out.Data)
+
+title_name = "OrgControl_ y2"
+title(title_name)
+
+saveas(fig_02_01, strcat( ...
+    savefile_fpath, "\", title_name, ".png"))
+
+
+%% Close figure window
+close all
 
 %% Demo: Step change
 % Target:
@@ -177,7 +206,8 @@ saveas(fig_02_02, strcat( ...
 %% Close figure window
 close all
 
-%%
+%% Decoupling: StepChange
+
 run("HW04_DecouplingControl_stepchange.slx")
 
 
@@ -258,7 +288,75 @@ saveas(fig_02_02, strcat( ...
 %% Close figure window
 close all
 
+%% Decoupling: PID coef. 
+clc
+
+% ----------------------------------
+% MV : u1
+initial_boundary = 9; 
+final_boundary = 12.5; 
+reaction_time = 20; 
+MV_change = 1; 
+dead_time = 1; %sec
+
+% Kp : slope
+slope = (final_boundary - initial_boundary ) / reaction_time; 
+% D : daed time
+% tau : MV_change
+
+% For PID controller:
+fprintf("For u1 PID controller====================\n")
+fprintf("Kc: %.4f\n", 1.2 * (MV_change/ (dead_time * slope)))
+fprintf("Tau_I: %.4f\n", (dead_time / 0.5))
+fprintf("Tau_D: %.4f\n", (dead_time * 0.5))
+
+
+% ----------------------------------
+% MV : u2
+initial_boundary = 40; 
+final_boundary = 33; 
+reaction_time = 10; 
+MV_change = 1; 
+dead_time = 1; %sec
+
+% Kp : slope
+slope = (final_boundary - initial_boundary ) / reaction_time; 
+% D : daed time
+% tau : MV_change
+
+% For PID controller:
+fprintf("For u2 PID controller====================\n")
+fprintf("Kc: %.4f\n", 1.2 * (MV_change/ (dead_time * slope)))
+fprintf("Tau_I: %.4f\n", (dead_time / 0.5))
+fprintf("Tau_D: %.4f\n", (dead_time * 0.5))
+
+
 %% Decoupling Control: Result
 
+% y1u1
+figure()
+hold on
+fig_01_01 = plot(out.simout_decouple_h.Time, out.simout_decouple_h.Data)
 
+title_name = "Decouple_ Control_ y1_ u1"
+title(title_name)
+
+saveas(fig_01_01, strcat( ...
+    savefile_fpath, "\", title_name, ".png"))
+
+
+% y2u2
+figure()
+hold on
+fig_02_01 = plot(out.simout_decouple_T_out.Time, out.simout_decouple_T_out.Data)
+
+title_name = "Decouple_ Control_ y2_ u2"
+title(title_name)
+
+saveas(fig_02_01, strcat( ...
+    savefile_fpath, "\", title_name, ".png"))
+
+
+%% Close figure window
+close all
 
